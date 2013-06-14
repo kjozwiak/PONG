@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+
+<script>
+function draw() {
+ var canvas = document.getElementById("canvas");
+ if (canvas.getContext) {
+  var ctx = canvas.getContext("2d");
+
+  var leftPaddle = new Object();
+  leftPaddle.currentx = 0;
+  leftPaddle.currenty = 250;
+  leftPaddle.currentWidth = 5;
+  leftPaddle.currentHeight = 75;
+
+  var rightPaddle = new Object();
+  rightPaddle.currentx = 795;
+  rightPaddle.currenty = 250;
+  rightPaddle.currentWidth = 5;
+  rightPaddle.currentHeight = 75;
+
+  var myBall = new Object();
+  myBall.defaultWidth = canvas.width / 2;
+  myBall.defaultHeight = canvas.height / 2;
+
+  var playerScore = new Object();
+  playerScore.player1Current = 0;
+  playerScore.player2Current = 0;
+
+  function drawBall (x, y) {
+   ctx.beginPath();
+   ctx.arc(x, y, 8, 0, Math.PI * 2, true);
+   ctx.fillStyle = "#FFFFFF";
+   ctx.fill(); 
+   ctx.stroke();
+  }
+
+  function drawLPaddle (x, y, leftPWidth, leftPHeight) {
+   ctx.fillSyle = "#FFFFFF";
+   ctx.fillRect (x, y, leftPWidth, leftPHeight);
+  }
+
+  function drawRPaddle (x, y, rightPWidth, rightPHeight) {
+   ctx.fillStyle = "#FFFFFF";
+   ctx.fillRect (x, y, rightPWidth, rightPHeight);
+  }	  
+
+  function gameScore (player1, player2, yPosition) {
+   ctx.font = "18px _sans";
+   ctx.textAlign = "center";
+   ctx.fillText ("Player 1:" + " " + player1 + " " + "Player 2:" + " " + player2, yPosition, 15);
+  }
+
+  ctx.fillStyle = "#000000";
+  ctx.fillRect (0, 0, canvas.width, canvas.height);
+
+  drawBall(myBall.defaultWidth, myBall.defaultHeight);
+  drawLPaddle(leftPaddle.currentx, leftPaddle.currenty, leftPaddle.currentWidth, leftPaddle.currentHeight);
+  drawRPaddle(rightPaddle.currentx, rightPaddle.currenty, rightPaddle.currentWidth, rightPaddle.currentHeight);
+  gameScore(playerScore.player1Current, playerScore.player2Current, 400);
+
+  function paddlePress(e) {
+   e = e || window.event;
+    if (e.keyCode == "38") { // Arrow Up KeyCode
+	    for (var i = 0; i < 10; i++) {
+	    drawRPaddle(rightPaddle.currentx, rightPaddle.currenty + 30, rightPaddle.currentWidth, rightPaddle.currentHeight + 30);
+
+            }
+    } else if (e.keyCode == "40") { // Arrow Down KeyCode
+	   
+    }
+  }
+
+  window.onkeydown = paddlePress;
+
+ }
+}
+</script>
+
+<style>
+ canvas { border: 2px solid black; }
+ #centerCanvas { width: 850px; margin-left: auto; margin-right: auto; }
+ #instructions { font-size: 14px; width: 800px; margin-left: auto; margin-right: auto; }
+</style>
+
+</head>
+<body onload="draw();">
+<div id="instructions">
+ <b>Start:</b> ENTER - <b>Restart the Game:</b> S - <b>Left Paddle Down:</b> Z - <b>Left Paddle Up:</b> X - <b>Right Paddle Down:</b> &#8595; - <b>Right Paddle UP:</b> &#8593;
+</div>
+<div id="centerCanvas">	
+ <canvas id="canvas" width="800" height="600"></canvas>
+</div>
+</body>
+</html>
