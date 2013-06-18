@@ -2,14 +2,20 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-
 <script>
 
 var ctx;
 var leftPaddle;
 var rightPaddle;
-var myBall;
-var playerScore;
+var ball;
+var score;
+
+var keyPress = {
+ rightUP: 38,	// up arrow
+ rightDOWN: 40, // down arrow
+ leftUP: 88, // x (up)
+ leftDOWN: 90 // z (down)
+};
 
   function drawScreen () {
    ctx.fillStyle = "#000000";
@@ -42,55 +48,58 @@ var playerScore;
 
    function mainDraw () {  
     drawScreen ();   
-    drawBall (myBall.defaultWidth, myBall.defaultHeight);
-    drawLPaddle (leftPaddle.currentx, leftPaddle.currenty, leftPaddle.currentWidth, leftPaddle.currentHeight);
-    drawRPaddle (rightPaddle.currentx, rightPaddle.currenty, rightPaddle.currentWidth, rightPaddle.currentHeight);
-    gameScore (playerScore.player1Current, playerScore.player2Current, 400);
+    drawBall (ball.width, ball.height);
+    drawLPaddle (leftPaddle.x, leftPaddle.y, leftPaddle.width, leftPaddle.height);
+    drawRPaddle (rightPaddle.x, rightPaddle.y, rightPaddle.width, rightPaddle.height);
+    gameScore (score.player1, score.player2, 400);
    }	  
 
   function paddlePress(e) {
    e = e || window.event;
-   if (e.keyCode == "38" && rightPaddle.currenty > 10) { // Arrow Up KeyCode
-       rightPaddle.currenty -= 40;    
-    } else if (e.keyCode == "40" && rightPaddle.currenty < 500) { // Arrow Down KeyCode   
-       rightPaddle.currenty += 40;   
-    } else if (e.keyCode  == "90" && leftPaddle.currenty < 530) { // Z KeyCode
-       leftPaddle.currenty += 40;
-    } else if (e.keyCode == "88" && leftPaddle.currenty > 10) { // X KeyCode
-       leftPaddle.currenty -= 40;
+   if (e.keyCode == keyPress.rightUP && rightPaddle.y > 10) {
+        rightPaddle.y -= 40;    
+       } else if (e.keyCode == keyPress.rightDOWN && rightPaddle.y < 500) {
+        rightPaddle.y += 40;   
+       } else if (e.keyCode  == keyPress.leftUP && leftPaddle.y > 10) {
+        leftPaddle.y -= 40;
+       } else if (e.keyCode == keyPress.leftDOWN && leftPaddle.y < 530) {
+        leftPaddle.y += 40;
+       }
    }
-  }
 
   function init () {
    var canvas = document.getElementById("canvas");
     if (canvas.getContext) {
-	 ctx = canvas.getContext("2d");
+     ctx = canvas.getContext("2d");
      var FPS = 40;
      setInterval (mainDraw, 1000 / FPS);  
      window.onkeydown = paddlePress;
 	 
-      leftPaddle = new Object();
-      leftPaddle.currentx = 0;
-      leftPaddle.currenty = 250;
-      leftPaddle.currentWidth = 5;
-      leftPaddle.currentHeight = 75;
+      leftPaddle = {
+       x: 0,
+       y: 250,
+       width: 5,
+       height: 75
+      };
 	  
-	  rightPaddle = new Object();
-      rightPaddle.currentx = 795;
-      rightPaddle.currenty = 250;
-      rightPaddle.currentWidth = 5;
-      rightPaddle.currentHeight = 75;
+      rightPaddle = {
+       x: 795,
+       y: 250,
+       width: 5,
+       height: 75
+      };
 	  
-	  myBall = new Object();
-      myBall.defaultWidth = canvas.width / 2;
-      myBall.defaultHeight = canvas.height / 2;
+      ball = {
+       width: canvas.width / 2,
+       height: canvas.height / 2
+      };
 	  
-	  playerScore = new Object();
-      playerScore.player1Current = 0;
-      playerScore.player2Current = 0;	  
+      score = {
+       player1: 0,
+       player2: 0
+      };      
     }
   }
-  
 </script>
 
 <style>
@@ -98,7 +107,6 @@ var playerScore;
  #centerCanvas { width: 850px; margin-left: auto; margin-right: auto; }
  #instructions { font-size: 14px; width: 800px; margin-left: auto; margin-right: auto; }
 </style>
-
 </head>
 <body onload="init();">
 <div id="instructions">
