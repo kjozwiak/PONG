@@ -5,6 +5,7 @@
 <script>
 
 var ctx;
+var screen;
 var leftPaddle;
 var rightPaddle;
 var ball;
@@ -17,42 +18,12 @@ var keyPress = {
  leftDOWN: 90 // z (down)
 };
 
-  function drawScreen () {
-   ctx.fillStyle = "#000000";
-   ctx.fillRect (0, 0, canvas.width, canvas.height);  
-  }	  
-  
-  function drawBall () {
-   ball.width += ball.speed;	  
-   ctx.beginPath();
-   ctx.arc(ball.width, ball.height, 8, 0, Math.PI * 2, true);
-   ctx.fillStyle = "#FFFFFF";
-   ctx.fill(); 
-   ctx.stroke();
-  }
-
-  function drawLPaddle () {
-   ctx.fillSyle = "#FFFFFF";
-   ctx.fillRect (leftPaddle.x, leftPaddle.y, leftPaddle.width, leftPaddle.height);
-  }
-
-  function drawRPaddle () {
-   ctx.fillStyle = "#FFFFFF";
-   ctx.fillRect (rightPaddle.x, rightPaddle.y, rightPaddle.width, rightPaddle.height);
-  }	  
-
-  function gameScore () {
-   ctx.font = "14px _sans";
-   ctx.textAlign = "center";
-   ctx.fillText ("Player 1:" + " " + score.player1 + " " + "Player 2:" + " " + score.player2,  canvas.width / 2, 15);
-  }
-
   function mainDraw () {  
-   drawScreen ();   
-   drawBall ();
-   drawLPaddle ();
-   drawRPaddle ();
-   gameScore ();
+   screen.draw ();   
+   ball.draw ();
+   leftPaddle.draw ();
+   rightPaddle.draw ();
+   score.draw ();
   }	  
 
   function paddlePress(e) {
@@ -75,30 +46,58 @@ var keyPress = {
      var FPS = 40;
      setInterval (mainDraw, 1000 / FPS);  
      window.onkeydown = paddlePress;
+
+      screen = {
+       draw: function () {
+       ctx.fillStyle = "#000000";
+       ctx.fillRect (0, 0, canvas.width, canvas.height);
+       }
+      };
 	 
       leftPaddle = {
        x: 0,
        y: 250,
        width: 5,
-       height: 75
+       height: 75,
+       draw: function () {
+        ctx.fillSyle = "#FFFFFF";
+        ctx.fillRect (leftPaddle.x, leftPaddle.y, leftPaddle.width, leftPaddle.height);
+       }
       };
 	  
       rightPaddle = {
        x: 795,
        y: 250,
        width: 5,
-       height: 75
+       height: 75,
+       draw: function () {
+        ctx.fillStyle = "#FFFFFF";
+        ctx.fillRect (rightPaddle.x, rightPaddle.y, rightPaddle.width, rightPaddle.height);
+       }
       };
 	  
       ball = {
-       width: canvas.width / 2,
-       height: canvas.height / 2,
-       speed: 8
+       x: canvas.width / 2,
+       y: canvas.height / 2,
+       speed: 7,
+       draw: function() {
+        ball.x += ball.speed;
+        ctx.beginPath();
+        ctx.arc(ball.x, ball.y, 8, 0, Math.PI * 2, true);
+        ctx.fillStyle = "#FFFFFF";
+        ctx.fill();
+        ctx.stroke();
+       }
       };
 	  
       score = {
        player1: 0,
-       player2: 0
+       player2: 0,
+       draw: function () {
+        ctx.font = "14px _sans";
+        ctx.textAlign = "center";
+        ctx.fillText ("Player 1:" + " " + score.player1 + " " + "Player 2:" + " " + score.player2,  canvas.width / 2, 15);
+        }
       };      
     }
   }
