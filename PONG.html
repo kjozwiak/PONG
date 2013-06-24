@@ -79,14 +79,19 @@ var keyPress = {
       ball = {
        x: canvas.width / 2,
        y: canvas.height / 2,
-       speed: 7,
-       angle: 45,
+       speed: 8.5,
+       angle: 35,
        draw: function() {
-        var radians = ball.angle * Math.PI / 180;
-        var xunits = Math.cos(radians) * ball.speed;
-        var yunits = Math.sin(radians) * ball.speed;
-        ball.x += xunits;
-        ball.y += yunits;
+        var radians = this.angle * Math.PI / 180;
+        var xunits = Math.cos(radians) * this.speed;
+        var yunits = Math.sin(radians) * this.speed;
+        this.x += xunits;
+        this.y += yunits;
+        if (this.x > canvas.width || this.x < 0) {
+         this.angle = 180 - this.angle;
+        } else if (this.y > canvas.height || this.y < 0) {
+         this.angle = 360 - this.angle;
+        }
         ctx.beginPath();
          ctx.arc(ball.x, ball.y, 8, 0, Math.PI * 2, true);
          ctx.fillStyle = "#FFFFFF";
