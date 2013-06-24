@@ -80,12 +80,18 @@ var keyPress = {
        x: canvas.width / 2,
        y: canvas.height / 2,
        speed: 7,
+       angle: 45,
        draw: function() {
-        ball.x += ball.speed;
+        var radians = ball.angle * Math.PI / 180;
+        var xunits = Math.cos(radians) * ball.speed;
+        var yunits = Math.sin(radians) * ball.speed;
+        ball.x += xunits;
+        ball.y += yunits;
         ctx.beginPath();
-        ctx.arc(ball.x, ball.y, 8, 0, Math.PI * 2, true);
-        ctx.fillStyle = "#FFFFFF";
-        ctx.fill();
+         ctx.arc(ball.x, ball.y, 8, 0, Math.PI * 2, true);
+         ctx.fillStyle = "#FFFFFF";
+         ctx.fill();
+        ctx.closePath();
         ctx.stroke();
        }
       };
@@ -94,9 +100,9 @@ var keyPress = {
        player1: 0,
        player2: 0,
        draw: function () {
-        ctx.font = "14px _sans";
+        ctx.font = "40px _sans";
         ctx.textAlign = "center";
-        ctx.fillText ("Player 1:" + " " + score.player1 + " " + "Player 2:" + " " + score.player2,  canvas.width / 2, 15);
+        ctx.fillText (score.player1 + " " + score.player2,  canvas.width / 2, 35);
         }
       };      
     }
