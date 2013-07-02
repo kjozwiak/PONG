@@ -133,11 +133,11 @@ var keyPress = {
 </style>
 </head>
 <body onload="init();">
-<div id="instructions">
- <b>Start:</b> ENTER - <b>Restart the Game:</b> S - <b>Left Paddle Down:</b> Z - <b>Left Paddle Up:</b> X - <b>Right Paddle Down:</b> &#8595; - <b>Right Paddle UP:</b> &#8593;
+<div id="instructions" align="center">
+<b>Left Paddle Down:</b> Z - <b>Left Paddle Up:</b> X - <b>Right Paddle Down:</b> &#8595; - <b>Right Paddle UP:</b> &#8593;
 </div>
 <div id="centerCanvas">	
- <canvas id="canvas" width="800" height="600"></canvas>
+ <canvas id="canvas" moz-opaque width="800" height="600"></canvas> <!-- increase performance on Firefox with moz-opaque as translucency not important -->
 </div>
 </body>
 </html>
