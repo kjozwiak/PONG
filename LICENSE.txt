@@ -1,5 +1,5 @@
 PONG - Simple PONG game coded in JavaScript/HTML Canvas
-Copyright (C) 2013  Kamil Jozwiak
+Copyright (C) 2013  Kamil Jozwiak <http://www.kamiljozwiak.com>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
