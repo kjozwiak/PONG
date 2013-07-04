@@ -1,143 +1,163 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8" />
-<script>
+     <head>
+          <title>Pong - Kamil Jozwiak</title>
+          <meta charset="UTF-8" />
+          <style>
+                  canvas {
+                         border: 2px solid black; 
+                  }
 
-var ctx;
-var screen;
-var leftPaddle;
-var rightPaddle;
-var ball;
-var score;
+                  #centerCanvas {
+                         width: 850px;
+                         margin-left: auto;
+                         margin-right: auto;
+                  }
 
-var keyPress = {
- rightUP: 38,	// up arrow
- rightDOWN: 40, // down arrow
- leftUP: 88, // x (up)
- leftDOWN: 90 // z (down)
-};
+                  #instructions {
+                         font-size: 14px;
+                         width: 800px;
+                         margin-left: auto;
+                         margin-right: auto;
+                  }
+          </style>
+          <script>
 
-  function mainDraw () {  
-   screen.draw ();   
-   ball.draw ();
-   leftPaddle.draw ();
-   rightPaddle.draw ();
-   score.draw ();
-  }	  
+          var ctx;
+          var screen;
+          var leftPaddle;
+          var rightPaddle;
+          var ball;
+          var score;
 
-  function paddlePress(e) {
-   e = e || window.event;
-   if (e.keyCode == keyPress.rightUP && rightPaddle.y > 10) {
-        rightPaddle.y -= 40;    
-       } else if (e.keyCode == keyPress.rightDOWN && rightPaddle.y < 500) {
-        rightPaddle.y += 40;   
-       } else if (e.keyCode  == keyPress.leftUP && leftPaddle.y > 10) {
-        leftPaddle.y -= 40;
-       } else if (e.keyCode == keyPress.leftDOWN && leftPaddle.y < 530) {
-        leftPaddle.y += 40;
-       }
-   }
+          var keyPress = {
+            rightUP: 38, // up arrow
+            rightDOWN: 40, // down arrow
+            leftUP: 88, // x (up)
+            leftDOWN: 90 // z (down)
+          };
 
-  function init () {
-   var canvas = document.getElementById("canvas");
-    if (canvas.getContext) {
-     ctx = canvas.getContext("2d");
-     var FPS = 40;
-     setInterval (mainDraw, 1000 / FPS);  
-     window.onkeydown = paddlePress;
+          function mainDraw () {  
+            screen.draw ();   
+            ball.draw ();
+            leftPaddle.draw ();
+            rightPaddle.draw ();
+            score.draw ();
+          }	  
 
-      screen = {
-       draw: function () {
-       ctx.fillStyle = "#000000";
-       ctx.fillRect (0, 0, canvas.width, canvas.height);
-       ctx.beginPath();
-       ctx.moveTo (canvas.width / 2, 0);
-       ctx.lineTo (canvas.width / 2, canvas.height);
-       ctx.strokeStyle = "rgba(255, 255, 255, 0.5)";
-       ctx.lineWidth = 2;
-       ctx.closePath();
-       ctx.stroke();
-       }
-      };
+          function paddlePress(e) {
+            e = e || window.event;
+
+              if (e.keyCode == keyPress.rightUP && rightPaddle.y > 10) {
+                 rightPaddle.y -= 40;    
+              } else if (e.keyCode == keyPress.rightDOWN && rightPaddle.y < 500) {
+                 rightPaddle.y += 40;   
+              } else if (e.keyCode  == keyPress.leftUP && leftPaddle.y > 10) {
+                 leftPaddle.y -= 40;
+              } else if (e.keyCode == keyPress.leftDOWN && leftPaddle.y < 530) {
+                 leftPaddle.y += 40;
+              }
+          }
+
+          function init () {
+            var canvas = document.getElementById("canvas");
+	    
+            if (canvas.getContext) {
+               ctx = canvas.getContext("2d");
+               var FPS = 40;
+               setInterval (mainDraw, 1000 / FPS);  
+               window.onkeydown = paddlePress;
+
+               screen = {
+                 draw: function () {
+                   ctx.fillStyle = "#000000";
+                   ctx.fillRect (0, 0, canvas.width, canvas.height);
+                   ctx.beginPath();
+                   ctx.moveTo (canvas.width / 2, 0);
+                   ctx.lineTo (canvas.width / 2, canvas.height);
+                   ctx.strokeStyle = "rgba(255, 255, 255, 0.5)";
+                   ctx.lineWidth = 2;
+                   ctx.closePath();
+                   ctx.stroke();
+               }
+          };
 	 
-      leftPaddle = {
-       x: 0,
-       y: 250,
-       width: 5,
-       height: 75,
-       draw: function () {
-        ctx.fillSyle = "#FFFFFF";
-        ctx.fillRect (leftPaddle.x, leftPaddle.y, leftPaddle.width, leftPaddle.height);
-       }
-      };
+          leftPaddle = {
+            x: 20,
+            y: 250,
+            width: 5,
+            height: 75,
+            draw: function () {
+              ctx.fillSyle = "#FFFFFF";
+              ctx.fillRect (leftPaddle.x, leftPaddle.y, leftPaddle.width, leftPaddle.height);
+            }
+          };
 	  
-      rightPaddle = {
-       x: 795,
-       y: 250,
-       width: 5,
-       height: 75,
-       draw: function () {
-        ctx.fillStyle = "#FFFFFF";
-	ctx.fillRect (rightPaddle.x, rightPaddle.y, rightPaddle.width, rightPaddle.height);
-       }
-      };
+          rightPaddle = {
+            x: 775,
+            y: 250,
+            width: 5,
+            height: 75,
+            draw: function () {
+              ctx.fillStyle = "#FFFFFF";
+              ctx.fillRect (rightPaddle.x, rightPaddle.y, rightPaddle.width, rightPaddle.height);
+            }
+          };
 	  
-      ball = {
-       x: canvas.width / 2,
-       y: canvas.height / 2,
-       speed: 8.5,
-       angle: 50,
-       draw: function() {
-        var radians = this.angle * Math.PI / 180;
-        var xunits = Math.cos(radians) * this.speed;
-        var yunits = Math.sin(radians) * this.speed;
-        this.x += xunits;
-        this.y += yunits;
-        if (this.x > canvas.width) {
-         this.angle = 180 - this.angle;
-         score.player1 += 1;
-         } else if (this.x < 0) {
-         this.angle = 180 - this.angle;
-         score.player2 += 1;
-         } else if (this.y > canvas.height || this.y < 0) {
-         this.angle = 360 - this.angle;
-        }
-        ctx.beginPath();
-         ctx.arc(ball.x, ball.y, 8, 0, Math.PI * 2, true);
-         ctx.strokeStyle = "#FFFFFF";
-         ctx.fillStyle = "#FFFFFF";
-         ctx.fill();
-         ctx.closePath();
-        ctx.stroke();
-       }
-      };
+          ball = {
+            x: canvas.width / 2,
+            y: canvas.height / 2,
+            speed: 6,
+            angle: 50,
+            draw: function() {
+              var radians = this.angle * Math.PI / 180;
+              var xunits = Math.cos(radians) * this.speed;
+              var yunits = Math.sin(radians) * this.speed;
+              this.x += xunits;
+              this.y += yunits;
+	      
+              if (this.x > canvas.width) {
+                this.angle = 180 - this.angle;
+                score.player1 += 1;
+              } else if (this.x < 0) {
+                this.angle = 180 - this.angle;
+                score.player2 += 2;
+              } else if (this.y > canvas.height || this.y < 0) {
+                this.angle = 360 - this.angle;
+              }
+	     
+              ctx.beginPath();
+              ctx.arc(ball.x, ball.y, 8, 0, Math.PI * 2, true);
+              ctx.strokeStyle = "#FFFFFF";
+              ctx.fillStyle = "#FFFFFF";
+              ctx.fill();
+              ctx.closePath();
+              ctx.stroke();
+            }
+          };
 	  
-      score = {
-       player1: 0,
-       player2: 0,
-       draw: function () {
-        ctx.font = "40px _sans";
-        ctx.textAlign = "center";
-        ctx.fillText (score.player1 + " " + score.player2,  canvas.width / 2, 35);
-        }
-      };      
-    }
-  }
-</script>
+          score = {
+           player1: 0,
+           player2: 0,
+           draw: function () {
+             ctx.font = "40px _sans";
+             ctx.textAlign = "center";
+             ctx.fillText (score.player1 + " " + score.player2,  canvas.width / 2, 35);
+           }
+          };      
+                            }
+                                   }
+          </script>
+     </head>
+     <body onload="init();">
 
-<style>
- canvas { border: 2px solid black; }
- #centerCanvas { width: 850px; margin-left: auto; margin-right: auto; }
- #instructions { font-size: 14px; width: 800px; margin-left: auto; margin-right: auto; }
-</style>
-</head>
-<body onload="init();">
-<div id="instructions" align="center">
-<b>Left Paddle Down:</b> Z - <b>Left Paddle Up:</b> X - <b>Right Paddle Down:</b> &#8595; - <b>Right Paddle UP:</b> &#8593;
-</div>
-<div id="centerCanvas">	
- <canvas id="canvas" moz-opaque width="800" height="600"></canvas> <!-- increase performance on Firefox with moz-opaque as translucency not important -->
-</div>
-</body>
+        <div id="instructions" align="center">
+        <b>Left Paddle Down:</b> Z - <b>Left Paddle Up:</b> X - <b>Right Paddle Down:</b> &#8595; - <b>Right Paddle UP:</b> &#8593;
+        </div>
+	
+        <div id="centerCanvas">
+        <canvas id="canvas" moz-opaque width="800" height="600"></canvas> <!-- increase performance on Firefox with moz-opaque as translucency not important -->
+	</div>
+
+     </body>
 </html>
