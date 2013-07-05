@@ -64,7 +64,7 @@
 	    
             if (canvas.getContext) {
                ctx = canvas.getContext("2d");
-               var FPS = 40;
+               var FPS = 60;
                setInterval (mainDraw, 1000 / FPS);  
                window.onkeydown = paddlePress;
 
@@ -107,7 +107,7 @@
           ball = {
             x: canvas.width / 2,
             y: canvas.height / 2,
-            speed: 6,
+            speed: 5,
             angle: 50,
             radius: 8,
             draw: function() {
@@ -116,6 +116,8 @@
               var yunits = Math.sin(radians) * this.speed;
               this.x += xunits;
               this.y += yunits;
+
+              // colission detection
 	      
               if (this.x > canvas.width) {
                 this.angle = 180 - this.angle;
@@ -126,6 +128,8 @@
               } else if (this.y > canvas.height || this.y < 0) {
                 this.angle = 360 - this.angle;
               } else if (this.y < leftPaddle.y + leftPaddle.height && this.y > leftPaddle.y && this.x < this.radius + leftPaddle.x) {
+                this.angle = 180 - this.angle;
+              } else if (this.y < rightPaddle.y + rightPaddle.height && this.y > rightPaddle.y && this.x > this.radius + rightPaddle.x) {
                 this.angle = 180 - this.angle;
               }
 
