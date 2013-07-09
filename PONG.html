@@ -29,6 +29,8 @@
           var rightPaddle;
           var ball;
           var score;
+          var mainElements;
+          var PaddleMoveAmount = 40;
           var hittingWallSound = new Audio ("sounds/hitWall.wav");
           var hitPaddleSound = new Audio ("sounds/hitPaddle.wav");
           var playerScoreSound = new Audio ("sounds/playerScore.wav");
@@ -41,24 +43,23 @@
           };
 
           function mainDraw () {
-            screen.draw ();
-            ball.draw();
-            leftPaddle.draw ();
-            rightPaddle.draw ();
-            score.draw ();
+            requestAnimationFrame(mainDraw);
+            mainElements.forEach(function(element) {
+            element.draw();
+            });
           }	  
 
           function paddlePress(e) {
             e = e || window.event;
 
               if (e.keyCode == keyPress.rightUP && rightPaddle.y > 10) {
-                 rightPaddle.y -= 40;    
+                 rightPaddle.y -= PaddleMoveAmount;    
               } else if (e.keyCode == keyPress.rightDOWN && rightPaddle.y < 500) {
-                 rightPaddle.y += 40;   
+                 rightPaddle.y += PaddleMoveAmount;   
               } else if (e.keyCode  == keyPress.leftUP && leftPaddle.y > 10) {
-                 leftPaddle.y -= 40;
+                 leftPaddle.y -= PaddleMoveAmount;
               } else if (e.keyCode == keyPress.leftDOWN && leftPaddle.y < 530) {
-                 leftPaddle.y += 40;
+                 leftPaddle.y += PaddleMoveAmount;
               }
           }
 
@@ -67,8 +68,7 @@
 
           if (canvas.getContext) {
             ctx = canvas.getContext("2d");
-            var FPS = 60;
-            setInterval (mainDraw, 1000 / FPS);  
+            requestAnimationFrame(mainDraw);
             window.onkeydown = paddlePress;
 	       
           screen = {
@@ -80,8 +80,8 @@
               ctx.lineTo (canvas.width / 2, canvas.height);
               ctx.strokeStyle = "rgba(255, 255, 255, 0.5)";
               ctx.lineWidth = 2;
-              ctx.closePath();
               ctx.stroke();
+              ctx.closePath();
             }
           };
 	 
@@ -91,7 +91,7 @@
             width: 5,
             height: 75,
             draw: function () {
-              ctx.fillSyle = "#FFFFFF";
+              ctx.fillStyle = "#FFFFFF";
               ctx.fillRect (this.x, this.y, this.width, this.height);
             }
           };
@@ -119,8 +119,6 @@
               var yunits = Math.sin(radians) * this.speed;
               this.x += xunits;
               this.y += yunits;
-
-              // colission detection
 	      
               if (this.x > canvas.width) {
                    this.angle = 180 - this.angle;
@@ -161,6 +159,14 @@
             }
           };      
 
+          mainElements = [
+            screen,
+            leftPaddle,
+            rightPaddle,
+            ball,
+            score
+          ];
+ 
           }
          }
  
