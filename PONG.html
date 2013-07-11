@@ -30,7 +30,7 @@
           var ball;
           var score;
           var mainElements;
-          var PaddleMoveAmount = 40;
+          var PaddleMoveAmount = 30;
           var hittingWallSound = new Audio ("sounds/hitWall.wav");
           var hitPaddleSound = new Audio ("sounds/hitPaddle.wav");
           var playerScoreSound = new Audio ("sounds/playerScore.wav");
@@ -52,13 +52,13 @@
           function paddlePress(e) {
             e = e || window.event;
 
-              if (e.keyCode == keyPress.rightUP && rightPaddle.y > 10) {
+	    if (e.keyCode == keyPress.rightUP && rightPaddle.y > 0 + PaddleMoveAmount) {
                  rightPaddle.y -= PaddleMoveAmount;    
-              } else if (e.keyCode == keyPress.rightDOWN && rightPaddle.y < 500) {
+              } else if (e.keyCode == keyPress.rightDOWN && rightPaddle.y < canvas.height - rightPaddle.height - PaddleMoveAmount) {
                  rightPaddle.y += PaddleMoveAmount;   
-              } else if (e.keyCode  == keyPress.leftUP && leftPaddle.y > 10) {
+              } else if (e.keyCode  == keyPress.leftUP && leftPaddle.y > 0 + PaddleMoveAmount) {
                  leftPaddle.y -= PaddleMoveAmount;
-              } else if (e.keyCode == keyPress.leftDOWN && leftPaddle.y < 530) {
+              } else if (e.keyCode == keyPress.leftDOWN && leftPaddle.y < canvas.height - leftPaddle.height - PaddleMoveAmount) {
                  leftPaddle.y += PaddleMoveAmount;
               }
           }
@@ -75,13 +75,6 @@
             draw: function () {
               ctx.fillStyle = "#000000";
               ctx.fillRect (0, 0, canvas.width, canvas.height);
-              ctx.beginPath();
-              ctx.moveTo (canvas.width / 2, 0);
-              ctx.lineTo (canvas.width / 2, canvas.height);
-              ctx.strokeStyle = "rgba(255, 255, 255, 0.5)";
-              ctx.lineWidth = 2;
-              ctx.stroke();
-              ctx.closePath();
             }
           };
 	 
@@ -121,15 +114,16 @@
               this.y += yunits;
 	      
               if (this.x > canvas.width) {
-                   this.angle = 180 - this.angle;
                    playerScoreSound.play();   		      
                    score.player1 += 1;
+                   ball.x = canvas.width / 2;
+                   ball.y = canvas.height / 2;
               } else if (this.x < 0) {
-                   this.angle = 180 - this.angle;
                    playerScoreSound.play();
                    score.player2 += 1;
-                   this.x = canvas.width / 2;
-                   this.y = canvas.height / 2;
+                   ball.x = canvas.width / 2;
+                   ball.y = canvas.height / 2;
+                   this.angle = 360 - this.angle;
               } else if (this.y > canvas.height || this.y < 0) {
                    this.angle = 360 - this.angle;
                    hittingWallSound.play();
@@ -142,10 +136,10 @@
               }
 
               ctx.beginPath();
-              ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
+              ctx.arc (this.x, this.y, this.radius, 0, Math.PI * 2, true);
               ctx.fillStyle = "#FFFFFF";
-              ctx.fill();
-              ctx.closePath();
+              ctx.fill ();
+              ctx.closePath ();
             }
           };
 	  
@@ -153,9 +147,10 @@
             player1: 0,
             player2: 0,
             draw: function () {
-              ctx.font = "40px _sans";
+              ctx.font = "35px Arial sans-serif";
               ctx.textAlign = "center";
-              ctx.fillText (this.player1 + " " + this.player2,  canvas.width / 2, 35);
+              ctx.fillText (this.player1, 70, 30);
+              ctx.fillText (this.player2, 730, 30);
             }
           };      
 
@@ -166,7 +161,7 @@
             ball,
             score
           ];
- 
+
           }
          }
  
