@@ -16,7 +16,8 @@
 
                   #instructions {
                          font-size: 14px;
-                         width: 800px;
+			 width: 800px;
+			 text-align: center;
                          margin-left: auto;
                          margin-right: auto;
                   }
@@ -106,7 +107,7 @@
             speed: 5,
             angle: 50,
             radius: 8,
-            draw: function() {
+            draw: function () {
               var radians = this.angle * Math.PI / 180;
               var xunits = Math.cos(radians) * this.speed;
               var yunits = Math.sin(radians) * this.speed;
@@ -135,7 +136,7 @@
                    sounds.hitPaddleSound.play();
               }
 
-              ctx.beginPath();
+              ctx.beginPath ();
               ctx.arc (this.x, this.y, this.radius, 0, Math.PI * 2, true);
               ctx.fillStyle = "#FFFFFF";
               ctx.fill ();
@@ -175,7 +176,7 @@
      </head>
      <body onload="init();">
 
-        <div id="instructions" align="center">
+        <div id="instructions">
         <b>Left Paddle Down:</b> Z - <b>Left Paddle Up:</b> X - <b>Right Paddle Down:</b> &#8595; - <b>Right Paddle UP:</b> &#8593;
         </div>
 	
