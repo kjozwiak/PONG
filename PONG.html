@@ -32,6 +32,8 @@
           var mainElements;
           var PaddleMoveAmount = 30;
           var sounds;
+          var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+                                      window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
 
           var keyPress = {
             rightUP: 38, // up arrow
