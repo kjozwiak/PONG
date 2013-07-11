@@ -31,9 +31,7 @@
           var score;
           var mainElements;
           var PaddleMoveAmount = 30;
-          var hittingWallSound = new Audio ("sounds/hitWall.wav");
-          var hitPaddleSound = new Audio ("sounds/hitPaddle.wav");
-          var playerScoreSound = new Audio ("sounds/playerScore.wav");
+          var sounds;
 
           var keyPress = {
             rightUP: 38, // up arrow
@@ -114,25 +112,25 @@
               this.y += yunits;
 	      
               if (this.x > canvas.width) {
-                   playerScoreSound.play();   		      
+                   sounds.playerScoreSound.play();   		      
                    score.player1 += 1;
                    ball.x = canvas.width / 2;
                    ball.y = canvas.height / 2;
               } else if (this.x < 0) {
-                   playerScoreSound.play();
+                   sounds.playerScoreSound.play();
                    score.player2 += 1;
                    ball.x = canvas.width / 2;
                    ball.y = canvas.height / 2;
                    this.angle = 360 - this.angle;
               } else if (this.y > canvas.height || this.y < 0) {
                    this.angle = 360 - this.angle;
-                   hittingWallSound.play();
+                   sounds.hittingWallSound.play();
               } else if (this.y < leftPaddle.y + leftPaddle.height && this.y > leftPaddle.y && this.x < leftPaddle.x + this.radius) {
                    this.angle = 180 - this.angle;
-                   hitPaddleSound.play();
+                   sounds.hitPaddleSound.play();
               } else if (this.y < rightPaddle.y + rightPaddle.height && this.y > rightPaddle.y && this.x > rightPaddle.x - this.radius) {
                    this.angle = 180 - this.angle;
-                   hitPaddleSound.play();
+                   sounds.hitPaddleSound.play();
               }
 
               ctx.beginPath();
@@ -161,6 +159,12 @@
             ball,
             score
           ];
+
+          sounds = {
+          hittingWallSound: new Audio ("sounds/hitWall.wav"),
+          hitPaddleSound: new Audio ("sounds/hitPaddle.wav"),
+          playerScoreSound: new Audio ("sounds/playerScore.wav")
+          };
 
           }
          }
