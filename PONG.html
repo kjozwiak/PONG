@@ -4,7 +4,6 @@
     <title>Pong - Kamil Jozwiak</title>
     <meta charset="UTF-8" />
     <style>
-
       canvas {
         border: 2px solid black;
       }
@@ -46,8 +45,8 @@
 
       function mainDraw () {
         requestAnimationFrame(mainDraw);
-        mainElements.forEach(function(element) {
-        element.draw();
+          mainElements.forEach(function(element) {
+          element.draw();
         });
       }
 
@@ -96,10 +95,10 @@
             y: 250,
             width: 5,
             height: 75,
-              draw: function () {
-                ctx.fillStyle = "#FFFFFF";
-                ctx.fillRect (this.x, this.y, this.width, this.height);
-              }
+            draw: function () {
+              ctx.fillStyle = "#FFFFFF";
+              ctx.fillRect (this.x, this.y, this.width, this.height);
+            }
           };
 
           ball = {
@@ -148,12 +147,12 @@
           score = {
             player1: 0,
             player2: 0,
-              draw: function () {
-                ctx.font = "35px Arial sans-serif";
-                ctx.textAlign = "center";
-                ctx.fillText (this.player1, 70, 30);
-                ctx.fillText (this.player2, 730, 30);
-              }
+            draw: function () {
+              ctx.font = "35px Arial sans-serif";
+              ctx.textAlign = "center";
+              ctx.fillText (this.player1, 70, 30);
+              ctx.fillText (this.player2, 730, 30);
+            }
           };
 
           mainElements = [
