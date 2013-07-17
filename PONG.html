@@ -1,187 +1,187 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>Pong - Kamil Jozwiak</title>
-        <meta charset="UTF-8" />
-        <style>
+  <head>
+    <title>Pong - Kamil Jozwiak</title>
+    <meta charset="UTF-8" />
+    <style>
 
-        canvas {
-            border: 2px solid black;
+      canvas {
+        border: 2px solid black;
+      }
+
+      #centerCanvas {
+        width: 850px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      #instructions {
+        font-size: 14px;
+        width: 800px;
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    </style>
+
+    <script>
+      var ctx;
+      var screen;
+      var leftPaddle;
+      var rightPaddle;
+      var ball;
+      var score;
+      var mainElements;
+      var PaddleMoveAmount = 30;
+      var sounds;
+      var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+                                  window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+
+      var keyPress = {
+        rightUP: 38, // up arrow
+        rightDOWN: 40, // down arrow
+        leftUP: 88, // x (up)
+        leftDOWN: 90 // z (down)
+      };
+
+      function mainDraw () {
+        requestAnimationFrame(mainDraw);
+        mainElements.forEach(function(element) {
+        element.draw();
+        });
+      }
+
+      function paddlePress(e) {
+        e = e || window.event;
+
+        if (e.keyCode == keyPress.rightUP && rightPaddle.y > 0 + PaddleMoveAmount) {
+          rightPaddle.y -= PaddleMoveAmount;
+        } else if (e.keyCode == keyPress.rightDOWN && rightPaddle.y < canvas.height - rightPaddle.height - PaddleMoveAmount) {
+          rightPaddle.y += PaddleMoveAmount;
+        } else if (e.keyCode  == keyPress.leftUP && leftPaddle.y > 0 + PaddleMoveAmount) {
+          leftPaddle.y -= PaddleMoveAmount;
+        } else if (e.keyCode == keyPress.leftDOWN && leftPaddle.y < canvas.height - leftPaddle.height - PaddleMoveAmount) {
+          leftPaddle.y += PaddleMoveAmount;
         }
+      }
 
-        #centerCanvas {
-            width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-        }
+      function init () {
+        var canvas = document.getElementById("canvas");
 
-        #instructions {
-            font-size: 14px;
-            width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        </style>
+        if (canvas.getContext) {
+          ctx = canvas.getContext("2d");
+          requestAnimationFrame(mainDraw);
+          window.onkeydown = paddlePress;
 
-        <script>
+          screen = {
+              draw: function () {
+                ctx.fillStyle = "#000000";
+                ctx.fillRect (0, 0, canvas.width, canvas.height);
+              }
+          };
 
-        var ctx;
-        var screen;
-        var leftPaddle;
-        var rightPaddle;
-        var ball;
-        var score;
-        var mainElements;
-        var PaddleMoveAmount = 30;
-        var sounds;
-
-        var keyPress = {
-            rightUP: 38, // up arrow
-            rightDOWN: 40, // down arrow
-            leftUP: 88, // x (up)
-            leftDOWN: 90 // z (down)
-        };
-
-        function mainDraw () {
-            requestAnimationFrame(mainDraw);
-            mainElements.forEach(function(element) {
-            element.draw();
-            });
-        }
-
-        function paddlePress(e) {
-            e = e || window.event;
-
-            if (e.keyCode == keyPress.rightUP && rightPaddle.y > 0 + PaddleMoveAmount) {
-                rightPaddle.y -= PaddleMoveAmount;
-            } else if (e.keyCode == keyPress.rightDOWN && rightPaddle.y < canvas.height - rightPaddle.height - PaddleMoveAmount) {
-                rightPaddle.y += PaddleMoveAmount;
-            } else if (e.keyCode  == keyPress.leftUP && leftPaddle.y > 0 + PaddleMoveAmount) {
-                leftPaddle.y -= PaddleMoveAmount;
-            } else if (e.keyCode == keyPress.leftDOWN && leftPaddle.y < canvas.height - leftPaddle.height - PaddleMoveAmount) {
-                leftPaddle.y += PaddleMoveAmount;
+          leftPaddle = {
+            x: 20,
+            y: 250,
+            width: 5,
+            height: 75,
+            draw: function () {
+              ctx.fillStyle = "#FFFFFF";
+              ctx.fillRect (this.x, this.y, this.width, this.height);
             }
-        }
+          };
 
-        function init () {
-            var canvas = document.getElementById("canvas");
+          rightPaddle = {
+            x: 775,
+            y: 250,
+            width: 5,
+            height: 75,
+              draw: function () {
+                ctx.fillStyle = "#FFFFFF";
+                ctx.fillRect (this.x, this.y, this.width, this.height);
+              }
+          };
 
-            if (canvas.getContext) {
-                ctx = canvas.getContext("2d");
-                requestAnimationFrame(mainDraw);
-                window.onkeydown = paddlePress;
+          ball = {
+            x: canvas.width / 2,
+            y: canvas.height / 2,
+            speed: 5,
+            angle: 50,
+            radius: 8,
+            draw: function () {
+              var radians = this.angle * Math.PI / 180;
+              var xunits = Math.cos(radians) * this.speed;
+              var yunits = Math.sin(radians) * this.speed;
+              this.x += xunits;
+              this.y += yunits;
 
-            screen = {
-                draw: function () {
-                    ctx.fillStyle = "#000000";
-                    ctx.fillRect (0, 0, canvas.width, canvas.height);
-                }
-            };
-
-            leftPaddle = {
-                x: 20,
-                y: 250,
-                width: 5,
-                height: 75,
-                draw: function () {
-                    ctx.fillStyle = "#FFFFFF";
-                    ctx.fillRect (this.x, this.y, this.width, this.height);
-                }
-            };
-
-            rightPaddle = {
-                x: 775,
-                y: 250,
-                width: 5,
-                height: 75,
-                draw: function () {
-                    ctx.fillStyle = "#FFFFFF";
-                    ctx.fillRect (this.x, this.y, this.width, this.height);
-                }
-            };
-
-            ball = {
-                x: canvas.width / 2,
-                y: canvas.height / 2,
-                speed: 5,
-                angle: 50,
-                radius: 8,
-                draw: function() {
-                    var radians = this.angle * Math.PI / 180;
-                    var xunits = Math.cos(radians) * this.speed;
-                    var yunits = Math.sin(radians) * this.speed;
-                    this.x += xunits;
-                    this.y += yunits;
-
-                if (this.x > canvas.width) {
-                    sounds.playerScoreSound.play();
-                    score.player1 += 1;
-                    ball.x = canvas.width / 2;
-                    ball.y = canvas.height / 2;
-                } else if (this.x < 0) {
-                    sounds.playerScoreSound.play();
-                    score.player2 += 1;
-                    ball.x = canvas.width / 2;
-                    ball.y = canvas.height / 2;
-                    this.angle = 360 - this.angle;
-                } else if (this.y > canvas.height || this.y < 0) {
-                   this.angle = 360 - this.angle;
-                   sounds.hittingWallSound.play();
-                } else if (this.y < leftPaddle.y + leftPaddle.height && this.y > leftPaddle.y && this.x < leftPaddle.x + this.radius) {
-                   this.angle = 180 - this.angle;
-                   sounds.hitPaddleSound.play();
-                } else if (this.y < rightPaddle.y + rightPaddle.height && this.y > rightPaddle.y && this.x > rightPaddle.x - this.radius) {
-                   this.angle = 180 - this.angle;
-                   sounds.hitPaddleSound.play();
-                }
+              if (this.x > canvas.width) {
+                sounds.playerScoreSound.play();
+                score.player1 += 1;
+                ball.x = canvas.width / 2;
+                ball.y = canvas.height / 2;
+              } else if (this.x < 0) {
+                sounds.playerScoreSound.play();
+                score.player2 += 1;
+                ball.x = canvas.width / 2;
+                ball.y = canvas.height / 2;
+                this.angle = 360 - this.angle;
+              } else if (this.y > canvas.height || this.y < 0) {
+                this.angle = 360 - this.angle;
+                sounds.hittingWallSound.play();
+              } else if (this.y < leftPaddle.y + leftPaddle.height && this.y > leftPaddle.y && this.x < leftPaddle.x + this.radius) {
+                this.angle = 180 - this.angle;
+                sounds.hitPaddleSound.play();
+              } else if (this.y < rightPaddle.y + rightPaddle.height && this.y > rightPaddle.y && this.x > rightPaddle.x - this.radius) {
+                this.angle = 180 - this.angle;
+                sounds.hitPaddleSound.play();
+              }
 
                 ctx.beginPath();
                 ctx.arc (this.x, this.y, this.radius, 0, Math.PI * 2, true);
                 ctx.fillStyle = "#FFFFFF";
                 ctx.fill ();
                 ctx.closePath ();
-                }
-            };
-
-            score = {
-                player1: 0,
-                player2: 0,
-                draw: function () {
-                    ctx.font = "35px Arial sans-serif";
-                    ctx.textAlign = "center";
-                    ctx.fillText (this.player1, 70, 30);
-                    ctx.fillText (this.player2, 730, 30);
-                }
-            };
-
-            mainElements = [
-                screen,
-                leftPaddle,
-                rightPaddle,
-                ball,
-                score
-            ];
-
-            sounds = {
-                hittingWallSound: new Audio ("sounds/hitWall.wav"),
-                hitPaddleSound: new Audio ("sounds/hitPaddle.wav"),
-                playerScoreSound: new Audio ("sounds/playerScore.wav")
-            };
-
             }
-        };
-        </script>
-      </head>
+          };
 
-    <body onload="init();">
+          score = {
+            player1: 0,
+            player2: 0,
+              draw: function () {
+                ctx.font = "35px Arial sans-serif";
+                ctx.textAlign = "center";
+                ctx.fillText (this.player1, 70, 30);
+                ctx.fillText (this.player2, 730, 30);
+              }
+          };
 
-        <div id="instructions" align="center">
-            <b>Left Paddle Down:</b> Z - <b>Left Paddle Up:</b> X - <b>Right Paddle Down:</b> &#8595; - <b>Right Paddle UP:</b> &#8593;
-        </div>
+          mainElements = [
+            screen,
+            leftPaddle,
+            rightPaddle,
+            ball,
+            score
+          ];
 
-        <div id="centerCanvas">
-            <canvas id="canvas" width="800" height="600"></canvas>
-        </div>
+          sounds = {
+            hittingWallSound: new Audio ("sounds/hitWall.wav"),
+            hitPaddleSound: new Audio ("sounds/hitPaddle.wav"),
+            playerScoreSound: new Audio ("sounds/playerScore.wav")
+          };
+        }
+      };
+    </script>
+  </head>
 
-    </body>
+  <body onload="init();">
+    <div id="instructions">
+      <b>Left Paddle Down:</b> Z - <b>Left Paddle Up:</b> X - <b>Right Paddle Down:</b> &#8595; - <b>Right Paddle UP:</b> &#8593;
+    </div>
+
+    <div id="centerCanvas">
+      <canvas id="canvas" width="800" height="600"></canvas>
+    </div>
+
+  </body>
 </html>
