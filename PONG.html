@@ -108,6 +108,7 @@
             angle: 50,
             radius: 8,
             draw: function () {
+              var randomSide = Math.round(Math.random() * 1);
               var radians = this.angle * Math.PI / 180;
               var xunits = Math.cos(radians) * this.speed;
               var yunits = Math.sin(radians) * this.speed;
@@ -117,23 +118,23 @@
               if (this.x > canvas.width) {
                 sounds.playerScoreSound.play();
                 score.player1 += 1;
-                ball.x = canvas.width / 2;
-                ball.y = canvas.height / 2;
+                this.x = canvas.width / 2;
+                this.y = canvas.height / 2;
               } else if (this.x < 0) {
                 sounds.playerScoreSound.play();
                 score.player2 += 1;
-                ball.x = canvas.width / 2;
-                ball.y = canvas.height / 2;
+                this.x = canvas.width / 2;
+                this.y = canvas.height / 2;
                 this.angle = 360 - this.angle;
               } else if (this.y > canvas.height || this.y < 0) {
-                this.angle = 360 - this.angle;
                 sounds.hittingWallSound.play();
+                this.angle = 360 - this.angle;
               } else if (this.y < leftPaddle.y + leftPaddle.height && this.y > leftPaddle.y && this.x < leftPaddle.x + this.radius) {
-                this.angle = 180 - this.angle;
                 sounds.hitPaddleSound.play();
+                this.angle = 180 - this.angle;
               } else if (this.y < rightPaddle.y + rightPaddle.height && this.y > rightPaddle.y && this.x > rightPaddle.x - this.radius) {
-                this.angle = 180 - this.angle;
                 sounds.hitPaddleSound.play();
+                this.angle = 180 - this.angle;
               }
 
                 ctx.beginPath();
