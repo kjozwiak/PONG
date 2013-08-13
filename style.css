@@ -1,0 +1,17 @@
+canvas {
+ border: 2px solid black;
+}
+
+#centerCanvas {
+ width: 850px;
+ margin-left: auto;
+ margin-right: auto;
+}
+
+#instructions {
+ font-size: 14px;
+ width: 800px;
+ text-align: center;
+ margin-left: auto;
+ margin-right: auto;
+}

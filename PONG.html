@@ -3,25 +3,8 @@
   <head>
     <title>Pong - Kamil Jozwiak</title>
     <meta charset="UTF-8" />
-    <style>
-      canvas {
-        border: 2px solid black;
-      }
-
-      #centerCanvas {
-        width: 850px;
-        margin-left: auto;
-        margin-right: auto;
-      }
-
-      #instructions {
-        font-size: 14px;
-        width: 800px;
-        text-align: center;
-        margin-left: auto;
-        margin-right: auto;
-      }
-    </style>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="modernizr.js"></script>
 
     <script>
       var ctx;
@@ -67,7 +50,7 @@
       function init () {
         var canvas = document.getElementById("canvas");
 
-        if (canvas.getContext) {
+        if (Modernizr.canvas) {
           ctx = canvas.getContext("2d");
           requestAnimationFrame(mainDraw);
           window.onkeydown = paddlePress;
@@ -169,6 +152,8 @@
             hitPaddleSound: new Audio ("sounds/hitPaddle.wav"),
             playerScoreSound: new Audio ("sounds/playerScore.wav")
           };
+        } else {
+          document.write("Your Browser doesn't support Canvas, please download the latest Mozilla Firefox Browser!");
         }
       };
     </script>
