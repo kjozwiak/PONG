@@ -19,6 +19,10 @@
       var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
                                   window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
 
+      function canvasSupport() {
+        return Modernizr.canvas;
+      };
+
       var keyPress = {
         rightUP: 38, // up arrow
         rightDOWN: 40, // down arrow
@@ -26,7 +30,7 @@
         leftDOWN: 90 // z (down)
       };
 
-      function mainDraw () {
+      function mainDraw() {
         requestAnimationFrame(mainDraw);
           mainElements.forEach(function(element) {
           element.draw();
@@ -47,16 +51,18 @@
         }
       }
 
-      function init () {
-        var canvas = document.getElementById("canvas");
+      function init() {
 
-        if (Modernizr.canvas) {
+        if (!canvasSupport()) {
+          document.write("Your Browser doesn't support Canvas, please download the latest Mozilla Firefox Browser!");
+        } else {
+          var canvas = document.getElementById("canvas");
           ctx = canvas.getContext("2d");
           requestAnimationFrame(mainDraw);
           window.onkeydown = paddlePress;
 
           screen = {
-              draw: function () {
+              draw: function() {
                 ctx.fillStyle = "#000000";
                 ctx.fillRect (0, 0, canvas.width, canvas.height);
               }
@@ -67,7 +73,7 @@
             y: 250,
             width: 5,
             height: 75,
-            draw: function () {
+            draw: function() {
               ctx.fillStyle = "#FFFFFF";
               ctx.fillRect (this.x, this.y, this.width, this.height);
             }
@@ -78,7 +84,7 @@
             y: 250,
             width: 5,
             height: 75,
-            draw: function () {
+            draw: function() {
               ctx.fillStyle = "#FFFFFF";
               ctx.fillRect (this.x, this.y, this.width, this.height);
             }
@@ -90,7 +96,7 @@
             speed: 5,
             angle: 50,
             radius: 8,
-            draw: function () {
+            draw: function() {
               var randomSide = Math.round(Math.random() * 1);
               var radians = this.angle * Math.PI / 180;
               var xunits = Math.cos(radians) * this.speed;
@@ -131,7 +137,7 @@
           score = {
             player1: 0,
             player2: 0,
-            draw: function () {
+            draw: function() {
               ctx.font = "35px Arial sans-serif";
               ctx.textAlign = "center";
               ctx.fillText (this.player1, 70, 30);
@@ -152,8 +158,6 @@
             hitPaddleSound: new Audio ("sounds/hitPaddle.wav"),
             playerScoreSound: new Audio ("sounds/playerScore.wav")
           };
-        } else {
-          document.write("Your Browser doesn't support Canvas, please download the latest Mozilla Firefox Browser!");
         }
       };
     </script>
